@@ -1,0 +1,185 @@
+contact:
+activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Name Input Field -->
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Name"
+        android:inputType="text"
+        android:padding="10dp"/>
+
+    <!-- Phone Number Input Field -->
+    <EditText
+        android:id="@+id/phoneEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameEditText"
+        android:layout_marginTop="20dp"
+        android:hint="Enter your Phone Number"
+        android:inputType="phone"
+        android:padding="10dp"/>
+
+    <!-- Email Input Field -->
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phoneEditText"
+        android:layout_marginTop="20dp"
+        android:hint="Enter your Email"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"/>
+
+    <!-- Error Message Text -->
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please fill out all fields."
+        android:textColor="@android:color/holo_red_dark"
+        android:layout_below="@id/emailEditText"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@id/errorTextView"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
+Mainactivity.java:
+package com.example.contactform;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText nameEditText, phoneEditText, emailEditText;
+    private Button submitButton;
+    private TextView errorTextView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_contact_form);
+
+        // Initialize the views
+        nameEditText = findViewById(R.id.nameEditText);
+        phoneEditText = findViewById(R.id.phoneEditText);
+        emailEditText = findViewById(R.id.emailEditText);
+        submitButton = findViewById(R.id.submitButton);
+        errorTextView = findViewById(R.id.errorTextView);
+
+        // Set the submit button click listener
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Perform form validation
+                validateForm();
+            }
+        });
+    }
+
+    private void validateForm() {
+        String name = nameEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String email = emailEditText.getText().toString();
+
+        // Check if any field is empty
+        if (name.isEmpty() || phone.isEmpty() || email.isEmpty()) {
+            errorTextView.setVisibility(View.VISIBLE); // Show error message
+        } else {
+            errorTextView.setVisibility(View.GONE); // Hide error message
+            // Proceed with form submission (e.g., save data or display a success message)
+        }
+    }
+}
+CODE FOR DIALER APP:
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Phone Number Input Field -->
+    <EditText
+        android:id="@+id/phoneNumberEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Phone Number"
+        android:inputType="phone"
+        android:padding="10dp"/>
+
+    <!-- Call Button -->
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Call"
+        android:layout_below="@id/phoneNumberEditText"
+        android:layout_marginTop="20dp"/>
+</RelativeLayout>
+mainactivity.java:
+package com.example.dialerapp;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText phoneNumberEditText;
+    private Button callButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dialer);
+
+        // Initialize the views
+        phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
+        callButton = findViewById(R.id.callButton);
+
+        // Set the call button click listener
+        callButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initiateCall();
+            }
+        });
+    }
+
+    private void initiateCall() {
+        String phoneNumber = phoneNumberEditText.getText().toString();
+
+        // Check if phone number is not empty
+        if (!phoneNumber.isEmpty()) {
+            Uri uri = Uri.parse("tel:" + phoneNumber);
+            Intent intent = new Intent(Intent.ACTION_DIAL, uri);  // Open the dialer with the phone number
+            startActivity(intent);
+        } else {
+            phoneNumberEditText.setError("Please enter a phone number."); // Show error if empty
+        }
+    }
+}
+
+
